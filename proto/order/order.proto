@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package order;
+option go_package = "./proto/order;orderpb";
+
+// Service definition
+service OrderService {
+  rpc List (ListRequest) returns (ListResponse);
+}
+
+// Request message
+message ListRequest {
+  string user_id = 1;
+}
+
+// Define the message for a single order
+message Order {
+  string id = 1;
+  string item_name = 2;
+  float amount = 3;
+}
+
+// Response message
+message ListResponse {
+  repeated Order orders = 1;
+}
