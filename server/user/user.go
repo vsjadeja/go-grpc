@@ -13,6 +13,7 @@ import (
 	"google.golang.org/grpc"
 )
 
+const servicePort string = "8080"
 const JWT_SECRET = "my-jwt-secret"
 
 var jwtSecret = []byte(JWT_SECRET)
@@ -41,7 +42,7 @@ func (s *UserServer) Register(ctx context.Context, req *pb.RegisterRequest) (*pb
 }
 
 func main() {
-	lis, err := net.Listen("tcp", ":50051")
+	lis, err := net.Listen("tcp", ":"+servicePort)
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
@@ -49,7 +50,7 @@ func main() {
 	grpcServer := grpc.NewServer()
 	pb.RegisterUserServiceServer(grpcServer, &UserServer{})
 
-	fmt.Println("gRPC UserServer running on port 50051...")
+	fmt.Println("gRPC UserServer running on port " + servicePort)
 	if err := grpcServer.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}

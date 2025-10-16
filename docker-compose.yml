@@ -1,0 +1,26 @@
+version: "3.9"
+
+services:
+  # Order Server
+  order-server:
+    build: 
+      context: .
+      dockerfile: server/order/Dockerfile
+      args:
+        VERSION: v0.0.0
+    networks:
+      - grpc-net
+
+  # User Server
+  user-server:
+    build: 
+      context: .
+      dockerfile: server/user/Dockerfile
+      args:
+        VERSION: v0.0.0
+    networks:
+      - grpc-net
+
+networks:
+  grpc-net:
+    driver: bridge

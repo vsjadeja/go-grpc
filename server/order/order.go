@@ -10,6 +10,8 @@ import (
 	"google.golang.org/grpc"
 )
 
+const servicePort string = "8080"
+
 type OrderServer struct {
 	pb.UnimplementedOrderServiceServer
 }
@@ -23,7 +25,7 @@ func (s *OrderServer) List(ctx context.Context, req *pb.ListRequest) (*pb.ListRe
 }
 
 func main() {
-	lis, err := net.Listen("tcp", ":50052")
+	lis, err := net.Listen("tcp", ":"+servicePort)
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
@@ -31,7 +33,7 @@ func main() {
 	grpcServer := grpc.NewServer()
 	pb.RegisterOrderServiceServer(grpcServer, &OrderServer{})
 
-	fmt.Println("gRPC OrderServer running on port 50052...")
+	fmt.Println("gRPC OrderServer running on port " + servicePort)
 	if err := grpcServer.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}
